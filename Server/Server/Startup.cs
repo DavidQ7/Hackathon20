@@ -44,6 +44,9 @@ namespace Server
 
 
             services.AddControllers();
+
+            services.AddSiteAuthentications(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,7 @@ namespace Server
             app.UseRouting();
             app.UseCors("MyPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
