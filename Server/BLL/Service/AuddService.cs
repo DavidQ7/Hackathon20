@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Common.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,11 @@ namespace BLL.Service
             };
             var json  = JsonConvert.SerializeObject(data);
             var response = await Client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));
-            return await response.Content.ReadAsStringAsync();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var Lyrics = JsonConvert.DeserializeObject<LyricsResponse>(jsonResponse);
+
+            return jsonResponse;
         }
     }
 }

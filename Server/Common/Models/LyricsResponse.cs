@@ -6,6 +6,7 @@ namespace Common.Models
 {
     public class LyricsResponse
     {
-
+        public string Status { set; get; }
+        public List<LyricsSound> Result { set; get; }
     }
 }
