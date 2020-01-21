@@ -27,5 +27,15 @@ namespace DAL.Repositories
             await context.SaveChangesAsync();
             return newAttempt.Entity;
         }
+        public async Task<Attempt> GetById(int id)
+        {
+            return await context.Attempts.FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<Attempt> Update(Attempt attempt)
+        {
+            var att = context.Attempts.Update(attempt);
+            await context.SaveChangesAsync();
+            return att.Entity;
+        }
     }
 }

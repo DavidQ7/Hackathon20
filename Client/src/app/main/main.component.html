@@ -7,3 +7,8 @@
     <input [(ngModel)]="lyrics">
     <button (click)="findSound()">Search</button>
 </div>
+<p>{{currentAttempt?.lyricsSound.title}}</p>
+<div>
+    <button (click)="rightAnswer()">Right</button>
+    <button (click)="wrongAnswer()">Wrong</button>
+</div>

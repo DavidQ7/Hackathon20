@@ -13,11 +13,13 @@ namespace BLL.Service
     {
         private readonly GameRepository gameRepository;
         private readonly UserRepository userRepository;
+        private readonly AttemptRepository attemptRepository;
         private readonly IMapper mapper;
-        public GameService(GameRepository gameRepository, UserRepository userRepository, IMapper mapper)
+        public GameService(GameRepository gameRepository, UserRepository userRepository, IMapper mapper, AttemptRepository attemptRepository)
         {
             this.gameRepository = gameRepository;
             this.userRepository = userRepository;
+            this.attemptRepository = attemptRepository;
             this.mapper = mapper;
         }
 
@@ -46,5 +48,22 @@ namespace BLL.Service
             var gameDTO = mapper.Map<GameDTO>(updateGame);
             return gameDTO;
         }
+
+        public async Task<GameDTO> Right(int id)
+        {
+            var game = await gameRepository.GetByAttemptId(id);
+            var attempt = await attemptRepository.GetById(id);
+
+            attempt.Result = true;
+            var updateAttempt = await attemptRepository.Update(attempt);
+
+            game.Won = true;
+            game.Ended = true;
+            var updateGame = await gameRepository.Update(game);
+
+            var returnGame = mapper.Map<GameDTO>(updateGame);
+            return returnGame;
+        }
+
     }
 }

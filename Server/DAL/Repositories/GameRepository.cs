@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,10 @@ namespace DAL.Repositories
         public async Task<Game> GetById(int id)
         {
             return await context.Games.FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<Game> GetByAttemptId(int id)
+        {
+            return await context.Attempts.Where(x => x.Id == id).Select(x => x.Game).FirstOrDefaultAsync();
         }
     }
 }
