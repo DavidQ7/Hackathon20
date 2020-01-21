@@ -50,9 +50,9 @@ namespace Server
             services.AddAutoMapper(typeof(UserProfile).Assembly);
 
             services.AddHttpClient<AuddService>();
-            services.AddTransient<AudioService>();
             services.AddTransient<UserService>();
             services.AddTransient<GameService>();
+            services.AddTransient<AttemptService>();
 
             services.AddTransient<AttemptRepository>();
             services.AddTransient<GameRepository>();

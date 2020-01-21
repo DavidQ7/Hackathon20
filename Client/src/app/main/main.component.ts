@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/Services/auth.service';
 import { GameService } from 'src/Services/game.service';
 import { Game } from 'src/Models/Game';
+import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 
 @Component({
   selector: 'app-main',
@@ -18,6 +19,7 @@ export class MainComponent implements OnInit {
   unsubscribe = new Subject();
   user: User;
   game: Game;
+  lyrics = '';
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService,
               private gameService: GameService) { }
@@ -43,6 +45,16 @@ export class MainComponent implements OnInit {
     this.gameService.endGame(this.game.id)
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => {this.game = game; }, error => console.log(error));
+  }
+
+  findSound() {
+    const attempt: NewLyricsAttempt = {
+      gameId: this.game.id,
+      lyrics: this.lyrics
+    };
+    this.gameService.newAttempt(attempt)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => { console.log(game); }, error => console.log(error));
   }
 
   exit() {

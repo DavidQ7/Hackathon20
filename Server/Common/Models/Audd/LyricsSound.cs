@@ -6,7 +6,7 @@ namespace Common.Models
 {
     public class LyricsSound
     {
-        public long Song_id { set; get; }
+        public int Song_id { set; get; }
         public long Artist_id { set; get; }
         public string Title { set; get; }
         public string Title_with_featured { set; get; }

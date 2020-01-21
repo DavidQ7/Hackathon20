@@ -19,7 +19,7 @@ namespace BLL.Service
             this.Client = Client;
             this.configuration = configuration;
         }
-        public async Task<string> GetByLyrics(string lyrics)
+        public async Task<List<LyricsSound>> GetByLyrics(string lyrics)
         {
             var data = new
             {
@@ -33,7 +33,7 @@ namespace BLL.Service
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var Lyrics = JsonConvert.DeserializeObject<LyricsResponse>(jsonResponse);
 
-            return jsonResponse;
+            return Lyrics.Result;
         }
     }
 }
