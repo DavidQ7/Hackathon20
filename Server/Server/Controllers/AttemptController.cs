@@ -24,5 +24,11 @@ namespace Server.Controllers
         {
             return await this.attemptService.NewAttempt(attempt);
         }
+
+        [HttpGet("wrong/{id}")]
+        public async Task Wrong(int id)
+        {
+
+        }
     }
 }
