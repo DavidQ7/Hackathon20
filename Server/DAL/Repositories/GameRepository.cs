@@ -1,4 +1,5 @@
 ﻿using Common.DbModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,16 @@ namespace DAL.Repositories
             var _newgame = await this.context.Games.AddAsync(game);
             await context.SaveChangesAsync();
             return _newgame.Entity;
+        }
+        public async Task<Game> Update(Game game)
+        {
+            var updateGame = context.Games.Update(game);
+            await context.SaveChangesAsync();
+            return updateGame.Entity;
+        }
+        public async Task<Game> GetById(int id)
+        {
+            return await context.Games.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

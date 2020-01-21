@@ -33,5 +33,18 @@ namespace BLL.Service
             var gameDTO = mapper.Map<GameDTO>(game);
             return gameDTO;
         }
+
+        public async Task<GameDTO> EndGame(int id)
+        {
+            var game = await gameRepository.GetById(id);
+
+            if(game != null)
+            {
+                game.Ended = true;
+            }
+            var updateGame = await gameRepository.Update(game);
+            var gameDTO = mapper.Map<GameDTO>(updateGame);
+            return gameDTO;
+        }
     }
 }

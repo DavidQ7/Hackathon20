@@ -25,5 +25,11 @@ namespace Server.Controllers
             var currentUserEmail = this.GetUserEmail();
             return await gameService.Add(currentUserEmail);
         }
+
+        [HttpGet("{id}")]
+        public async Task<GameDTO> EndGame(int id)
+        {
+            return await gameService.EndGame(id);
+        }
     }
 }

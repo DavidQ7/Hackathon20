@@ -36,6 +36,15 @@ export class MainComponent implements OnInit {
     .subscribe(game => {this.game = game; }, error => console.log(error));
   }
 
+  endGame() {
+    if (this.game === undefined) {
+      return;
+    }
+    this.gameService.endGame(this.game.id)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => {this.game = game; }, error => console.log(error));
+  }
+
   exit() {
     this.authService.SignOut();
   }

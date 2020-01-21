@@ -16,5 +16,7 @@ export class GameService {
   newGame() {
     return this.httpClient.get<Game>(`${environment.API + '/api/game/new'}`);
   }
-
+  endGame(id: number) {
+    return this.httpClient.get<Game>(`${environment.API + '/api/game/'}` + `${id}`);
+  }
 }
