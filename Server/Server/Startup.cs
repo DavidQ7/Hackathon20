@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.Service;
+using Common.Mappings;
 using DAL;
+using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -44,10 +47,16 @@ namespace Server
             string connectionString = Configuration["ConnectionStrings:ConnectionLocal"];
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddAutoMapper(typeof(UserProfile).Assembly);
 
             services.AddHttpClient<AuddService>();
             services.AddTransient<AudioService>();
             services.AddTransient<UserService>();
+            services.AddTransient<GameService>();
+
+            services.AddTransient<AttemptRepository>();
+            services.AddTransient<GameRepository>();
+            services.AddTransient<UserRepository>();
 
             services.AddControllers();
 

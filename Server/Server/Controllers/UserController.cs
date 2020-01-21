@@ -27,5 +27,14 @@ namespace Server.Controllers
             var user = await this.userService.GetByEmail(currentUserEmail);
             return user;
         }
+
+        [HttpPost]
+        public async Task<UserDTO> Authorize([FromBody]UserDTO user)
+        {
+            var currentUserEmail = this.GetUserEmail();
+            await this.userService.Add(user);
+            var dbuser = await userService.GetByEmail(currentUserEmail);
+            return dbuser;
+        }
     }
 }
