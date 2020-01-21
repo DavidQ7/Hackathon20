@@ -10,9 +10,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LandingComponent } from './landing/landing.component';
 import { MainComponent } from './main/main.component';
+import { TokenIntercepterService } from 'src/Services/token-intercepter.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,10 @@ import { MainComponent } from './main/main.component';
     AngularFirestoreModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenIntercepterService,
+    multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

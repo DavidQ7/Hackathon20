@@ -16,8 +16,8 @@ namespace Server.Controllers
         public async Task<UserDTO> Get()
         {
             var currentUserEmail = this.GetUserEmail();
-            var user = await this.userService.GetByEmail(currentUserEmail);
-            return user;
+            //var user = await this.userService.GetByEmail(currentUserEmail);
+            return new UserDTO();
         }
     }
 }
