@@ -31,7 +31,7 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.userService.Get()
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(user => { this.user = user; }, error => {
+    .subscribe(user => { this.user = user; this.newGame(); }, error => {
       this.router.navigate(['/about']);
     });
   }

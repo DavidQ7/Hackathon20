@@ -83,30 +83,35 @@
         <p class="center">For starting fill out form</p>
 
         <div class="search-container">
-            <input>
+            <input [(ngModel)]="lyrics">
             <div class="img">
-                <img src="assets/search.svg">
+                <img (click)="findSound()" src="assets/search.svg">
             </div>
             <div class="microphone">
                 <img src="assets/radio.svg">
             </div>
         </div>
-        <p class="end-game">End Game</p>
-        <div class="sound-container">
-
+        <p *ngIf="currentAttempt" (click)="endGame()" class="end-game">End Game</p>
+        <div *ngIf="currentAttempt" class="sound-container">
+            <div class="stick">
+            </div>
+            <div class="content">
+                <span class="title">{{currentAttempt?.lyricsSound.title}}</span>
+                <span class="group">{{currentAttempt?.lyricsSound.artist}}</span>
+            </div>
+            <div class="play">
+                <img src="assets/multimedia.svg"/> 
+            </div>
+        </div>
+        <div *ngIf="currentAttempt" class="buttons">
+            <div (click)="rightAnswer()" class="right">
+                <img src="assets/check.svg">
+                <span>Right</span>
+            </div>
+            <div (click)="wrongAnswer()" class="wrong">
+                <img src="assets/cancel.svg">
+                <p>Wrong</p>
+            </div>
         </div>
     </div>
-</div>
-<button (click)="newGame()">start</button>
-<button (click)="endGame()">end</button>
-<br />
-<br />
-<div>
-    <input [(ngModel)]="lyrics">
-    <button (click)="findSound()">Search</button>
-</div>
-<p>{{currentAttempt?.lyricsSound.title}}</p>
-<div>
-    <button (click)="rightAnswer()">Right</button>
-    <button (click)="wrongAnswer()">Wrong</button>
 </div>

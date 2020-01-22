@@ -46,7 +46,7 @@ header
     justify-content: center
 
     .center-container
-        width: 400px
+        width: 360px
 
         .score-container
             display: flex
@@ -77,7 +77,7 @@ header
             
             input
                 background: #F5F5F5
-                width: 300px
+                width: 280px
                 height: 35px
                 padding: 5px 0 5px 15px
                 display: inline-block
@@ -95,7 +95,7 @@ header
                 border: 0.5px solid #e7e7e7
                 width: 30px
                 img
-                    height: 20px
+                    height: 18px
 
                     &:hover
                         cursor: pointer
@@ -122,5 +122,76 @@ header
                 color: #2997ff
                 
         .sound-container
-            height: 50px
+            height: 70px
             width: 100%
+            display: flex
+            justify-content: center
+            margin-top: 20px
+            .stick
+                height: 100%
+                width: 3px
+                border-radius: 15px
+                background: #494949
+
+            .content
+                padding-left: 20px
+                height: 100%    
+                margin-left: 10px
+                width: 260px
+                display: flex
+                flex-direction: column
+                .title
+                    margin-top: 5px
+                    font-size: 18px
+                    font-weight: 500
+                .group
+                    margin-top: 15px
+                    margin-left: 5px
+                    color: #5C5C5C
+            .play
+                display: flex
+                align-items: center
+                justify-content: center
+                height: 100%
+                width: 50px
+                margin-left: 5px   
+                img
+                    height: 30px
+                    &:hover
+                        cursor: pointer
+        .buttons
+            margin-top: 25px
+            display: flex
+            justify-content: space-evenly
+
+            .right
+                height: 30px
+                background: #90EBDD
+                width: 100px
+                border-radius: 5px
+                color: white
+
+                padding: 5px
+                display: flex
+                align-items: center
+                justify-content: space-evenly
+                &:hover
+                    cursor: pointer
+                img
+                    height: 17px
+
+            .wrong
+                height: 30px
+                background: #F42C2C
+                width: 100px
+                border-radius: 5px
+                color: white
+
+                padding: 5px
+                display: flex
+                align-items: center
+                justify-content: space-evenly
+                &:hover
+                    cursor: pointer
+                img
+                    height: 17px

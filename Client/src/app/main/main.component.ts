@@ -18,8 +18,22 @@ import { WrongAttempt } from 'src/Models/WrongAttempt';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  user: User;
+  unsubscribe = new Subject();
+
+  constructor(private userService: UserService, private router: Router, private gameService: GameService) { }
 
   ngOnInit() {
+    this.userService.Get()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(user => { this.user = user; }, error => {
+      this.router.navigate(['/about']);
+    });
   }
+  newGame() {
+    this.gameService.newGame()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => { console.log(game); }, error => console.log(error));
+  }
+
 }

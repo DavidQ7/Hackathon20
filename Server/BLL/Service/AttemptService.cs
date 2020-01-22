@@ -60,7 +60,7 @@ namespace BLL.Service
             var SoundsList = await auddService.GetByLyrics(attempt.Lyrics);
             foreach (var dbGame in GameAttempts)
             {
-                var sound = SoundsList.FirstOrDefault(x => x.Song_id == dbGame.Id);
+                var sound = SoundsList.FirstOrDefault(x => x.Song_id == dbGame.SoundId);
 
                 if (sound != null)
                 {
