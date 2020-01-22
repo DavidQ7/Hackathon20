@@ -8,11 +8,13 @@ export class PhotoService {
   constructor() { }
 
   GetPhoto(fetchURL) {
-    return fetch(fetchURL)
+    return fetch(fetchURL, {headers: {
+      'Access-Control-Allow-Origin': '*'
+      }, })
   .then(response => response.blob())
   .then(async blob => {
       return await this.loadImage(blob);
-  });
+  }).catch((err) => console.log(err));
   }
   loadImage(src) {
     return new Promise(resolve => {
