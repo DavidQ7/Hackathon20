@@ -2,11 +2,11 @@
 import { Component } from "@angular/core";
 
 @Component({
-    selector: "app-footer",
-    templateUrl: "./footer.component.html",
-    styleUrls: ["./footer.component.css"]
+    selector: "app-header-icons",
+    templateUrl: "./headerIcons.component.html",
+    styleUrls: ["./headerIcons.component.css"]
 })
-export class FooterComponent {
+export class HeaderIconsComponent {
     share() {
         window.alert("The product has been shared!");
     }
