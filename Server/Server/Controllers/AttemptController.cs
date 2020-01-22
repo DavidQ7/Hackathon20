@@ -25,10 +25,10 @@ namespace Server.Controllers
             return await this.attemptService.NewAttempt(attempt);
         }
 
-        [HttpGet("wrong/{id}")]
-        public async Task Wrong(int id)
+        [HttpPost("wrong")]
+        public async Task<AttemptDTO> Wrong(WrongAttempt attempt)
         {
-
+            return await attemptService.Wrong(attempt);
         }
     }
 }

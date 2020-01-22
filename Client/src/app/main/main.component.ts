@@ -9,6 +9,7 @@ import { GameService } from 'src/Services/game.service';
 import { Game } from 'src/Models/Game';
 import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 import { Attempt } from 'src/Models/Attempt';
+import { WrongAttempt } from 'src/Models/WrongAttempt';
 
 @Component({
   selector: 'app-main',
@@ -66,7 +67,14 @@ export class MainComponent implements OnInit {
     .subscribe(game => {this.game = game; }, error => console.log(error));
   }
   wrongAnswer() {
-
+    const attempt: WrongAttempt = {
+      id: this.currentAttempt.id,
+      gameId: this.game.id,
+      lyrics: this.lyrics
+    };
+    this.gameService.wrongAnswer(attempt)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(att => { this.currentAttempt = att; }, error => console.log(error));
   }
   exit() {
     this.authService.SignOut();

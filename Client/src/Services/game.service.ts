@@ -27,4 +27,7 @@ export class GameService {
   rightAnswer(id: number) {
     return this.httpClient.get<Game>(`${environment.API + '/api/game/right/'}` + `${id}`);
   }
+  wrongAnswer(attempt: NewLyricsAttempt) {
+    return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt/wrong'}`, attempt);
+  }
 }
