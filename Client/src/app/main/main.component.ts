@@ -18,65 +18,8 @@ import { WrongAttempt } from 'src/Models/WrongAttempt';
 })
 export class MainComponent implements OnInit {
 
-  unsubscribe = new Subject();
-  user: User;
-  game: Game;
-  lyrics = '';
-  currentAttempt: Attempt;
-
-
-  constructor(private router: Router, private authService: AuthService, private userService: UserService,
-              private gameService: GameService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.userService.Get()
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(user => { this.user = user; }, error => {
-      this.router.navigate(['/about']);
-    });
-  }
-
-  newGame() {
-    this.gameService.newGame()
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
-  }
-
-  endGame() {
-    if (this.game === undefined) {
-      return;
-    }
-    this.gameService.endGame(this.game.id)
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
-  }
-
-  findSound() {
-    const attempt: NewLyricsAttempt = {
-      gameId: this.game.id,
-      lyrics: this.lyrics
-    };
-    this.gameService.newAttempt(attempt)
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(att => { this.currentAttempt = att; }, error => console.log(error));
-  }
-
-  rightAnswer() {
-    this.gameService.rightAnswer(this.currentAttempt.id)
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
-  }
-  wrongAnswer() {
-    const attempt: WrongAttempt = {
-      id: this.currentAttempt.id,
-      gameId: this.game.id,
-      lyrics: this.lyrics
-    };
-    this.gameService.wrongAnswer(attempt)
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(att => { this.currentAttempt = att; }, error => console.log(error));
-  }
-  exit() {
-    this.authService.SignOut();
   }
 }
