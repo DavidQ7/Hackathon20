@@ -76,42 +76,57 @@
 <div class="flex-container">
     <div class="center-container">
 
-        <div class="score-container">
-            <div class="mark" *ngFor="let number of [0,1,2,3,4]"></div>
-        </div>
+        <ul [ngSwitch]="game?.won">
 
-        <p class="center">For starting fill out form</p>
+            <li *ngSwitchCase="null">
 
-        <div class="search-container">
-            <input [(ngModel)]="lyrics">
-            <div class="img">
-                <img (click)="findSound()" src="assets/search.svg">
-            </div>
-            <div class="microphone">
-                <img src="assets/radio.svg">
-            </div>
-        </div>
-        <p *ngIf="currentAttempt" (click)="endGame()" class="end-game">End Game</p>
-        <div *ngIf="currentAttempt" class="sound-container">
-            <div class="stick">
-            </div>
-            <div class="content">
-                <span class="title">{{currentAttempt?.lyricsSound.title}}</span>
-                <span class="group">{{currentAttempt?.lyricsSound.artist}}</span>
-            </div>
-            <div class="play">
-                <img src="assets/multimedia.svg"/> 
-            </div>
-        </div>
-        <div *ngIf="currentAttempt" class="buttons">
-            <div (click)="rightAnswer()" class="right">
-                <img src="assets/check.svg">
-                <span>Right</span>
-            </div>
-            <div (click)="wrongAnswer()" class="wrong">
-                <img src="assets/cancel.svg">
-                <p>Wrong</p>
-            </div>
-        </div>
+                <div class="score-container">
+                    <div class="mark" *ngFor="let number of [0,1,2,3,4]"></div>
+                </div>
+
+                <p *ngIf="!currentAttempt" class="center">For starting fill out form</p>
+
+                <div *ngIf="!currentAttempt" class="search-container">
+                    <input [(ngModel)]="lyrics">
+                    <div class="img">
+                        <img (click)="findSound()" src="assets/search.svg">
+                    </div>
+                    <div class="microphone">
+                        <img src="assets/radio.svg">
+                    </div>
+                </div>
+
+
+                <div *ngIf="loading" class="loader">
+                    <ngx-ring-loader class="item"></ngx-ring-loader>
+                </div>
+                <p *ngIf="currentAttempt" (click)="endGame()" class="end-game">End Game</p>
+                <div *ngIf="currentAttempt" class="sound-container">
+                    <div class="stick">
+                    </div>
+                    <div class="content">
+                        <span class="title">{{currentAttempt?.lyricsSound.title}}</span>
+                        <span class="group">{{currentAttempt?.lyricsSound.artist}}</span>
+                    </div>
+                    <div class="play">
+                        <img src="assets/multimedia.svg" />
+                    </div>
+                </div>
+                <div *ngIf="currentAttempt" class="buttons">
+                    <div (click)="rightAnswer()" class="right">
+                        <img src="assets/check.svg">
+                        <span>Right</span>
+                    </div>
+                    <div (click)="wrongAnswer()" class="wrong">
+                        <img src="assets/cancel.svg">
+                        <p>Wrong</p>
+                    </div>
+                </div>
+                
+            </li>
+            <li *ngSwitchCase="true">Ironman</li>
+            <li *ngSwitchCase="false">Hulk</li>
+            <li *ngSwitchDefault></li>
+        </ul>
     </div>
 </div>

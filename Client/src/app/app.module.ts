@@ -17,6 +17,7 @@ import { TokenIntercepterService } from 'src/Services/token-intercepter.service'
 
 import { FormsModule } from '@angular/forms';
 import { GameComponent } from './game/game.component';
+import {NgxSpinnersModule} from 'ngx-spinners';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { GameComponent } from './game/game.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnersModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

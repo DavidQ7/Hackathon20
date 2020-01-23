@@ -54,7 +54,7 @@ namespace BLL.Service
 
             var GameAttempts = await attemptRepository.GetByGameId(attempt.GameId);
 
-            if(GameAttempts.Count > 4)
+            if(GameAttempts.Count > 3)
                 return null;
 
             var SoundsList = await auddService.GetByLyrics(attempt.Lyrics);

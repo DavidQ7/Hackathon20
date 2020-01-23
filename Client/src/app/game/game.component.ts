@@ -24,6 +24,7 @@ export class GameComponent implements OnInit {
   lyrics = '';
   currentAttempt: Attempt;
   listAttempts: Attempt[];
+  loading = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService,
               private gameService: GameService) { }
@@ -39,7 +40,7 @@ export class GameComponent implements OnInit {
   newGame() {
     this.gameService.newGame()
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
+    .subscribe(game => {this.game = game; console.log(this.game); }, error => console.log(error));
   }
 
   endGame() {
@@ -48,17 +49,18 @@ export class GameComponent implements OnInit {
     }
     this.gameService.endGame(this.game.id)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
+    .subscribe(game => { this.router.navigate(['']); }, error => console.log(error));
   }
 
   findSound() {
+    this.loading = true;
     const attempt: NewLyricsAttempt = {
       gameId: this.game.id,
       lyrics: this.lyrics
     };
     this.gameService.newAttempt(attempt)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(att => { this.currentAttempt = att; }, error => console.log(error));
+    .subscribe(att => { this.currentAttempt = att; this.loading = false; }, error => {console.log(error); this.loading = false; });
   }
 
   rightAnswer() {
