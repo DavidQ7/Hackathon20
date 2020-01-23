@@ -14,14 +14,13 @@ export class DeezerService {
       'x-rapidapi-key': '8afa69b90bmsh9e2d15d879d0566p1e0fd8jsn69e68698b9c1'
     })
   };
-  api = 'https://cors-anywhere.herokuapp.com/http://api.deezer.com/';
 
   constructor(private httpClient: HttpClient) {}
 
-  searchByTrackName(name: string) {
+  searchByTrackName(name: string, artist: string) {
     return this.httpClient
       .get(
-        `https://deezerdevs-deezer.p.rapidapi.com/search/track?q=${name}`, this.httpOptions)
+        `https://deezerdevs-deezer.p.rapidapi.com/search/track?q=${artist} ${name}`, this.httpOptions)
         .pipe(map((response: any) =>  response.data));
   }
 }

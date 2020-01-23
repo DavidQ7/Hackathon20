@@ -55,8 +55,6 @@ export class GameComponent implements OnInit {
     if (!this.attemptSoundId) {
     return;
     }
-    console.log(5);
-
     // tslint:disable-next-line:max-line-length
     const baseUrl = 'https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=true&width=350&height=140&color=ff0000&layout=dark&size=medium&type=tracks&id=';
     return this.sanitizer.bypassSecurityTrustResourceUrl(baseUrl + this.attemptSoundId.toString() + '&app_id=1');
@@ -88,9 +86,8 @@ export class GameComponent implements OnInit {
       this.currentAttempt = att;
       this.loading = false;
 
-      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.title)
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.artist , this.currentAttempt.lyricsSound.title)
       .subscribe(x => { this.resposeLyrics = x;
-                        this.resposeLyrics = this.resposeLyrics.filter(q => q.artist.name === this.currentAttempt.lyricsSound.artist);
                         if (this.resposeLyrics) {
                         this.attemptSoundId = this.resposeLyrics[0].id;
                         }
@@ -122,9 +119,8 @@ export class GameComponent implements OnInit {
       this.currentAttempt = att;
       this.listAttempts.push(true);
 
-      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.title)
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.artist , this.currentAttempt.lyricsSound.title)
       .subscribe(x => { this.resposeLyrics = x;
-                        this.resposeLyrics = this.resposeLyrics.filter(q => q.artist.name === this.currentAttempt.lyricsSound.artist);
                         if (this.resposeLyrics) {
                         this.attemptSoundId = this.resposeLyrics[0].id;
                         }
