@@ -15,13 +15,16 @@ namespace BLL.Service
         private readonly AttemptRepository attemptRepository;
         private readonly AuddService auddService;
         private readonly IMapper mapper;
+        private readonly GameRepository gameRepository;
 
-        public AttemptService(AttemptRepository attemptRepository, IMapper mapper, AuddService auddService)
+        public AttemptService(AttemptRepository attemptRepository, IMapper mapper, AuddService auddService, GameRepository gameRepository)
         {
             this.attemptRepository = attemptRepository;
             this.mapper = mapper;
             this.auddService = auddService;
+            this.gameRepository = gameRepository;
         }
+
 
         public async Task<AttemptDTO> NewAttempt(NewLyricsAttempt attempt)
         {
@@ -54,8 +57,14 @@ namespace BLL.Service
 
             var GameAttempts = await attemptRepository.GetByGameId(attempt.GameId);
 
-            if(GameAttempts.Count > 3)
+            if (GameAttempts.Count > 4)
+            {
+                var game = await gameRepository.GetById(attempt.GameId);
+                game.Won = true;
+                game.Ended = true;
+                await gameRepository.Update(game);
                 return null;
+            }
 
             var SoundsList = await auddService.GetByLyrics(attempt.Lyrics);
             foreach (var dbGame in GameAttempts)

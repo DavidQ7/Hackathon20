@@ -63,7 +63,6 @@ header
                 -moz-border-radius: 50%
                 -webkit-border-radius: 50%
                 -khtml-border-radius: 50%
-                background: #EDEDED
         .center
             text-align: center
             color: #3E3E3E
@@ -122,13 +121,13 @@ header
                 color: #2997ff
                 
         .sound-container
-            height: 70px
+            min-height: 70px
             width: 100%
             display: flex
             justify-content: center
             margin-top: 20px
             .stick
-                height: 100%
+                min-height: 100%
                 width: 3px
                 border-radius: 15px
                 background: #494949
@@ -199,3 +198,22 @@ header
             display: flex
             justify-content: center
             margin-top: 40px
+
+        .result-container
+            display: flex
+            align-items: center
+            justify-content: center
+            flex-direction: column
+            .result
+                margin-top: 20px
+                text-align: center
+                font-weight: 500
+                width: 100%
+            svg
+                height: 40px
+                margin-top: 40px
+
+                &:hover
+                    cursor: pointer
+                    fill: #2997ff
+

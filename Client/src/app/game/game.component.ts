@@ -10,6 +10,7 @@ import { Game } from 'src/Models/Game';
 import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 import { Attempt } from 'src/Models/Attempt';
 import { WrongAttempt } from 'src/Models/WrongAttempt';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-game',
@@ -23,7 +24,7 @@ export class GameComponent implements OnInit {
   game: Game;
   lyrics = '';
   currentAttempt: Attempt;
-  listAttempts: Attempt[];
+  listAttempts: boolean[] = [];
   loading = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService,
@@ -41,6 +42,10 @@ export class GameComponent implements OnInit {
     this.gameService.newGame()
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => {this.game = game; console.log(this.game); }, error => console.log(error));
+  }
+
+  refresh() {
+    window.location.reload();
   }
 
   endGame() {
@@ -66,7 +71,7 @@ export class GameComponent implements OnInit {
   rightAnswer() {
     this.gameService.rightAnswer(this.currentAttempt.id)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => {this.game = game; }, error => console.log(error));
+    .subscribe(game => {this.game = game; this.listAttempts.push(false); }, error => console.log(error));
   }
   wrongAnswer() {
     const attempt: WrongAttempt = {
@@ -76,7 +81,17 @@ export class GameComponent implements OnInit {
     };
     this.gameService.wrongAnswer(attempt)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(att => { this.currentAttempt = att; }, error => console.log(error));
+    .subscribe(att => {
+
+      if (isNull(att)) {
+        this.game.won = true;
+        this.game.ended = true;
+      } else {
+      this.currentAttempt = att;
+      this.listAttempts.push(true);
+      }
+
+    }, error => console.log(error));
   }
   exit() {
     this.authService.SignOut();

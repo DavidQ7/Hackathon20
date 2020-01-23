@@ -57,7 +57,7 @@ namespace BLL.Service
             attempt.Result = true;
             var updateAttempt = await attemptRepository.Update(attempt);
 
-            game.Won = true;
+            game.Won = false;
             game.Ended = true;
             var updateGame = await gameRepository.Update(game);
 
