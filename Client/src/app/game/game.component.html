@@ -113,6 +113,9 @@
                         <img src="assets/multimedia.svg" />
                     </div>
                 </div>
+                <div *ngIf="attemptSoundId" class="player">
+                    <iframe scrolling="no" frameborder="0" allowTransparency="true" [src]="returnSrc()" width="350" height="140"></iframe>
+                </div>
                 <div *ngIf="currentAttempt" class="buttons">
                     <div (click)="rightAnswer()" class="right">
                         <img src="assets/check.svg">

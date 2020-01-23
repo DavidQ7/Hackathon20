@@ -11,6 +11,10 @@ import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 import { Attempt } from 'src/Models/Attempt';
 import { WrongAttempt } from 'src/Models/WrongAttempt';
 import { isNull } from 'util';
+import { DeezerService } from 'src/Services/deezer.service';
+import { ResponseSearch } from 'src/Models/Deezer/ResponseSearch';
+import { ResponseSound } from 'src/Models/Deezer/ResponseSound';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-game',
@@ -27,8 +31,11 @@ export class GameComponent implements OnInit {
   listAttempts: boolean[] = [];
   loading = false;
 
+  resposeLyrics: ResponseSound[];
+  attemptSoundId;
+
   constructor(private router: Router, private authService: AuthService, private userService: UserService,
-              private gameService: GameService) { }
+              private gameService: GameService, private deezerService: DeezerService, private sanitizer: DomSanitizer ) { }
 
   ngOnInit() {
     this.userService.Get()
@@ -42,6 +49,17 @@ export class GameComponent implements OnInit {
     this.gameService.newGame()
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => {this.game = game; console.log(this.game); }, error => console.log(error));
+  }
+
+  returnSrc() {
+    if (!this.attemptSoundId) {
+    return;
+    }
+    console.log(5);
+
+    // tslint:disable-next-line:max-line-length
+    const baseUrl = 'https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=true&width=350&height=140&color=ff0000&layout=dark&size=medium&type=tracks&id=';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(baseUrl + this.attemptSoundId.toString() + '&app_id=1');
   }
 
   refresh() {
@@ -65,7 +83,20 @@ export class GameComponent implements OnInit {
     };
     this.gameService.newAttempt(attempt)
     .pipe(takeUntil(this.unsubscribe))
-    .subscribe(att => { this.currentAttempt = att; this.loading = false; }, error => {console.log(error); this.loading = false; });
+    .subscribe(att => {
+
+      this.currentAttempt = att;
+      this.loading = false;
+
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.title)
+      .subscribe(x => { this.resposeLyrics = x;
+                        this.resposeLyrics = this.resposeLyrics.filter(q => q.artist.name === this.currentAttempt.lyricsSound.artist);
+                        if (this.resposeLyrics) {
+                        this.attemptSoundId = this.resposeLyrics[0].id;
+                        }
+      }, error => console.log((error)));
+
+    }, error => {console.log(error); this.loading = false; });
   }
 
   rightAnswer() {
@@ -73,6 +104,7 @@ export class GameComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => {this.game = game; this.listAttempts.push(false); }, error => console.log(error));
   }
+
   wrongAnswer() {
     const attempt: WrongAttempt = {
       id: this.currentAttempt.id,
@@ -89,10 +121,20 @@ export class GameComponent implements OnInit {
       } else {
       this.currentAttempt = att;
       this.listAttempts.push(true);
+
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.title)
+      .subscribe(x => { this.resposeLyrics = x;
+                        this.resposeLyrics = this.resposeLyrics.filter(q => q.artist.name === this.currentAttempt.lyricsSound.artist);
+                        if (this.resposeLyrics) {
+                        this.attemptSoundId = this.resposeLyrics[0].id;
+                        }
+      }, error => console.log((error)));
+
       }
 
     }, error => console.log(error));
   }
+
   exit() {
     this.authService.SignOut();
   }

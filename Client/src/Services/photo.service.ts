@@ -8,8 +8,7 @@ export class PhotoService {
   constructor() { }
 
   GetPhoto(fetchURL) {
-    return fetch(fetchURL, {headers: {
-      'Access-Control-Allow-Origin': '*'
+    return fetch('https://cors-anywhere.herokuapp.com/' + fetchURL, {headers: {
       }, })
   .then(response => response.blob())
   .then(async blob => {
