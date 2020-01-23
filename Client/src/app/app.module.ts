@@ -15,6 +15,9 @@ import { LandingComponent } from './landing/landing.component';
 import { MainComponent } from './main/main.component';
 import { HeaderComponent } from './header/header.component';
 import { HeaderIconsComponent } from './headerIcons/headerIcons.component';
+import { HistoryComponent } from './history/history.component';
+import { AvatarComponent } from './avatar/avatar.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { HeaderIconsComponent } from './headerIcons/headerIcons.component';
     LandingComponent,
     MainComponent,
     HeaderComponent,
-    HeaderIconsComponent
+    HeaderIconsComponent,
+    HistoryComponent,
+    AvatarComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

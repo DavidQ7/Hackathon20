@@ -1,15 +1,14 @@
 // tslint:disable: quotemark
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
+// import "./history.svg";
 
 @Component({
     selector: "app-header-icons",
     templateUrl: "./headerIcons.component.html",
-    styleUrls: ["./headerIcons.component.css"]
+    styleUrls: ["./headerIcons.component.sass"]
 })
 export class HeaderIconsComponent {
-    share() {
-        window.alert("The product has been shared!");
-    }
+    @Input() logged: boolean;
 }
 
 /*

@@ -1,5 +1,5 @@
 // tslint:disable: quotemark
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
     selector: "app-header",
@@ -7,6 +7,7 @@ import { Component } from "@angular/core";
     styleUrls: ["./header.component.sass"]
 })
 export class HeaderComponent {
+    @Input() isLogged: boolean;
     share() {
         window.alert("The product has been shared!");
     }
