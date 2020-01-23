@@ -8,11 +8,12 @@ export class PhotoService {
   constructor() { }
 
   GetPhoto(fetchURL) {
-    return fetch(fetchURL)
+    return fetch('https://cors-anywhere.herokuapp.com/' + fetchURL, {headers: {
+      }, })
   .then(response => response.blob())
   .then(async blob => {
       return await this.loadImage(blob);
-  });
+  }).catch((err) => console.log(err));
   }
   loadImage(src) {
     return new Promise(resolve => {

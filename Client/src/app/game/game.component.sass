@@ -1,0 +1,229 @@
+header
+    height: 45px
+    background: #2C2C2C
+    padding: 0 20px 0 20px
+
+.header-container
+    height: 100%
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    .logo
+        color: white
+        font-weight: 400
+
+    .right-icons
+        width: 150px
+        display: flex
+        justify-content: flex-end
+
+        svg
+            margin-left: 20px
+
+        svg:hover
+            fill: #2997ff
+            cursor: pointer
+
+        .profile
+            margin-left: 20px
+            width: 30px
+            height: 30px
+            border-radius: 50%
+            -moz-border-radius: 50%
+            -webkit-border-radius: 50%
+            -khtml-border-radius: 50%
+            img
+                width: 30px
+                height: 30px
+                border-radius: 50%
+                -moz-border-radius: 50%
+                -webkit-border-radius: 50%
+                -khtml-border-radius: 50%
+                
+            &:hover
+                cursor: pointer
+
+.flex-container
+    display: flex
+    width: 100%
+    justify-content: center
+
+    .center-container
+        width: 360px
+
+        .score-container
+            display: flex
+            justify-content: center
+            align-items: center
+            height: 70px
+            width: 100%
+
+            .mark
+                margin: 0 15px 0 15px
+                width: 40px
+                height: 40px
+                border-radius: 50%
+                -moz-border-radius: 50%
+                -webkit-border-radius: 50%
+                -khtml-border-radius: 50%
+        .center
+            text-align: center
+            color: #3E3E3E
+            font-weight: 600
+            margin-top: 15px
+
+        .search-container
+            margin-top: 20px
+            display: flex
+            justify-content: center
+            
+            input
+                background: #F5F5F5
+                width: 280px
+                height: 35px
+                padding: 5px 0 5px 15px
+                display: inline-block
+                border: 0.5px solid #e7e7e7
+                border-radius: 10px 0px 0px 10px
+                box-sizing: border-box
+                outline: none
+
+            .img
+                background: #F5F5F5
+                display: flex
+                align-items: center
+                justify-content: center
+                border-radius: 0px 10px 10px 0px
+                border: 0.5px solid #e7e7e7
+                width: 30px
+                img
+                    height: 18px
+
+                    &:hover
+                        cursor: pointer
+
+            .microphone
+                display: flex
+                align-items: center
+                justify-content: center
+                width: 35px
+                img
+                    height: 25px
+
+                    &:hover
+                        cursor: pointer
+        .end-game
+            margin-top: 20px
+            margin-right: 25px
+            font-size: 14px
+            font-weight: 500
+            text-align: right
+            text-decoration: underline
+            &:hover
+                cursor: pointer
+                color: #2997ff
+                
+        .sound-container
+            min-height: 70px
+            width: 100%
+            display: flex
+            justify-content: center
+            margin-top: 20px
+            .stick
+                min-height: 100%
+                width: 3px
+                border-radius: 15px
+                background: #494949
+
+            .content
+                padding-left: 20px
+                height: 100%    
+                margin-left: 10px
+                width: 260px
+                display: flex
+                flex-direction: column
+                .title
+                    margin-top: 5px
+                    font-size: 18px
+                    font-weight: 500
+                .group
+                    margin-top: 15px
+                    margin-left: 5px
+                    color: #5C5C5C
+            .play
+                display: flex
+                align-items: center
+                justify-content: center
+                height: 100%
+                width: 50px
+                margin-left: 5px   
+                img
+                    height: 30px
+                    &:hover
+                        cursor: pointer
+        .player
+            height: 200px
+            width: 100%
+            display: flex
+            justify-content: center
+            align-items: center
+        .buttons
+            margin-top: 25px
+            display: flex
+            justify-content: space-evenly
+
+            .right
+                height: 30px
+                background: #90EBDD
+                width: 100px
+                border-radius: 5px
+                color: white
+
+                padding: 5px
+                display: flex
+                align-items: center
+                justify-content: space-evenly
+                &:hover
+                    cursor: pointer
+                img
+                    height: 17px
+
+            .wrong
+                height: 30px
+                background: #F42C2C
+                width: 100px
+                border-radius: 5px
+                color: white
+
+                padding: 5px
+                display: flex
+                align-items: center
+                justify-content: space-evenly
+                &:hover
+                    cursor: pointer
+                img
+                    height: 17px
+        .loader
+            display: flex
+            justify-content: center
+            margin-top: 40px
+
+        .result-container
+            display: flex
+            align-items: center
+            justify-content: center
+            flex-direction: column
+            .result
+                margin-top: 20px
+                text-align: center
+                font-weight: 500
+                width: 100%
+            svg
+                height: 40px
+                margin-top: 40px
+
+                &:hover
+                    cursor: pointer
+                    fill: #2997ff
+

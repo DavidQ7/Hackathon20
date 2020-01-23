@@ -10,7 +10,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LandingComponent } from './landing/landing.component';
 import { MainComponent } from './main/main.component';
 import { HeaderComponent } from './header/header.component';
@@ -19,6 +19,11 @@ import { HistoryComponent } from './history/history.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { LogoutComponent } from './logout/logout.component';
 
+import { TokenIntercepterService } from 'src/Services/token-intercepter.service';
+
+import { FormsModule } from '@angular/forms';
+import { GameComponent } from './game/game.component';
+import { NgxSpinnersModule } from 'ngx-spinners';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import { LogoutComponent } from './logout/logout.component';
     HeaderIconsComponent,
     HistoryComponent,
     AvatarComponent,
-    LogoutComponent
+    LogoutComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +43,15 @@ import { LogoutComponent } from './logout/logout.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    NgxSpinnersModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenIntercepterService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
