@@ -1,0 +1,137 @@
+import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/Services/user.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { User } from 'src/Models/User';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/Services/auth.service';
+import { GameService } from 'src/Services/game.service';
+import { Game } from 'src/Models/Game';
+import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
+import { Attempt } from 'src/Models/Attempt';
+import { WrongAttempt } from 'src/Models/WrongAttempt';
+import { isNull } from 'util';
+import { DeezerService } from 'src/Services/deezer.service';
+import { ResponseSearch } from 'src/Models/Deezer/ResponseSearch';
+import { ResponseSound } from 'src/Models/Deezer/ResponseSound';
+import { DomSanitizer } from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.sass']
+})
+export class GameComponent implements OnInit {
+
+  unsubscribe = new Subject();
+  user: User;
+  game: Game;
+  lyrics = '';
+  currentAttempt: Attempt;
+  listAttempts: boolean[] = [];
+  loading = false;
+
+  resposeLyrics: ResponseSound[];
+  attemptSoundId;
+
+  constructor(private router: Router, private authService: AuthService, private userService: UserService,
+              private gameService: GameService, private deezerService: DeezerService, private sanitizer: DomSanitizer ) { }
+
+  ngOnInit() {
+    this.userService.Get()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(user => { this.user = user; this.newGame(); }, error => {
+      this.router.navigate(['/about']);
+    });
+  }
+
+  newGame() {
+    this.gameService.newGame()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => {this.game = game; console.log(this.game); }, error => console.log(error));
+  }
+
+  returnSrc() {
+    if (!this.attemptSoundId) {
+    return;
+    }
+    // tslint:disable-next-line:max-line-length
+    const baseUrl = 'https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=true&width=350&height=140&color=ff0000&layout=dark&size=medium&type=tracks&id=';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(baseUrl + this.attemptSoundId.toString() + '&app_id=1');
+  }
+
+  refresh() {
+    window.location.reload();
+  }
+
+  endGame() {
+    if (this.game === undefined) {
+      return;
+    }
+    this.gameService.endGame(this.game.id)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => { this.router.navigate(['']); }, error => console.log(error));
+  }
+
+  findSound() {
+    this.loading = true;
+    const attempt: NewLyricsAttempt = {
+      gameId: this.game.id,
+      lyrics: this.lyrics
+    };
+    this.gameService.newAttempt(attempt)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(att => {
+
+      this.currentAttempt = att;
+      this.loading = false;
+
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.artist , this.currentAttempt.lyricsSound.title)
+      .subscribe(x => { this.resposeLyrics = x;
+                        if (this.resposeLyrics) {
+                        this.attemptSoundId = this.resposeLyrics[0].id;
+                        }
+      }, error => console.log((error)));
+
+    }, error => {console.log(error); this.loading = false; });
+  }
+
+  rightAnswer() {
+    this.gameService.rightAnswer(this.currentAttempt.id)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(game => {this.game = game; this.listAttempts.push(false); }, error => console.log(error));
+  }
+
+  wrongAnswer() {
+    const attempt: WrongAttempt = {
+      id: this.currentAttempt.id,
+      gameId: this.game.id,
+      lyrics: this.lyrics
+    };
+    this.gameService.wrongAnswer(attempt)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(att => {
+
+      if (isNull(att)) {
+        this.game.won = true;
+        this.game.ended = true;
+      } else {
+      this.currentAttempt = att;
+      this.listAttempts.push(true);
+
+      this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.artist , this.currentAttempt.lyricsSound.title)
+      .subscribe(x => { this.resposeLyrics = x;
+                        if (this.resposeLyrics) {
+                        this.attemptSoundId = this.resposeLyrics[0].id;
+                        }
+      }, error => console.log((error)));
+
+      }
+
+    }, error => console.log(error));
+  }
+
+  exit() {
+    this.authService.SignOut();
+  }
+}
