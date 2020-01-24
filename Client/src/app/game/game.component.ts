@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from 'src/Services/user.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -15,6 +15,7 @@ import { DeezerService } from 'src/Services/deezer.service';
 import { ResponseSearch } from 'src/Models/Deezer/ResponseSearch';
 import { ResponseSound } from 'src/Models/Deezer/ResponseSound';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-game',
@@ -22,6 +23,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./game.component.sass']
 })
 export class GameComponent implements OnInit {
+
+
 
   unsubscribe = new Subject();
   user: User;
@@ -51,6 +54,9 @@ export class GameComponent implements OnInit {
     .subscribe(game => {this.game = game; console.log(this.game); }, error => console.log(error));
   }
 
+
+
+
   returnSrc() {
     if (!this.attemptSoundId) {
     return;
@@ -64,6 +70,7 @@ export class GameComponent implements OnInit {
     window.location.reload();
   }
 
+
   endGame() {
     if (this.game === undefined) {
       return;
@@ -73,7 +80,48 @@ export class GameComponent implements OnInit {
     .subscribe(game => { this.router.navigate(['']); }, error => console.log(error));
   }
 
+
+
+
+  uploadFile(files) {
+
+    if (files.length === 0) {
+      return;
+    }
+    if (files[0].type !== 'audio/mp3') {
+      return;
+    }
+    const formData = new FormData();
+
+    formData.append('GameId', this.game.id.toString());
+    formData.append('FormData', files[0]);
+
+    this.loading = true;
+
+    this.gameService.newAttemptByFile(formData)
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+      } else if (event.type === HttpEventType.Response) {
+
+        this.currentAttempt = event.body;
+        this.loading = false;
+
+        this.deezerService.searchByTrackName(this.currentAttempt.lyricsSound.artist , this.currentAttempt.lyricsSound.title)
+        .subscribe(x => { this.resposeLyrics = x;
+                          if (this.resposeLyrics) {
+                          this.attemptSoundId = this.resposeLyrics[0].id;
+                          }
+        }, error => console.log((error)));
+      }
+    }, error => {   this.loading = false; });
+  }
+
+
   findSound() {
+
+    if (!this.lyrics) {return; }
+
     this.loading = true;
     const attempt: NewLyricsAttempt = {
       gameId: this.game.id,
@@ -82,7 +130,14 @@ export class GameComponent implements OnInit {
     this.gameService.newAttempt(attempt)
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(att => {
-
+      if (isNull(att)) {
+        this.gameService.endGameLose(this.game.id)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(game => { this.game = game;  }, error => console.log(error));
+        this.loading = false;
+        this.listAttempts.push(true);
+        return;
+      }
       this.currentAttempt = att;
       this.loading = false;
 

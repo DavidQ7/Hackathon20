@@ -24,6 +24,11 @@ namespace Server.Controllers
         {
             return await this.attemptService.NewAttempt(attempt);
         }
+        [HttpPost("file")]
+        public async Task<AttemptDTO> GetBySound([FromForm]NewAttemptSound sound)
+        {
+            return await this.attemptService.NewAttemptSound(sound);
+        }
 
         [HttpPost("wrong")]
         public async Task<AttemptDTO> Wrong(WrongAttempt attempt)
