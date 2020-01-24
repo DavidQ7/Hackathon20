@@ -47,11 +47,23 @@ namespace BLL.Service
                 var _attemptDTO = new AttemptDTO()
                 {
                     Id = dbAttempt.Id,
-                    LyricsSound = Newsound
+                    LyricsSound = Filter(Newsound)
                 };
                 return _attemptDTO;
             }
             return null;
+        }
+        public LyricsSound Filter(LyricsSound last)
+        {
+            last.Artist = FindBadStr(last.Artist);
+            last.Title = FindBadStr(last.Title);
+            return last;
+        }
+        public string FindBadStr(string falseString)
+        {
+            var str = falseString.Split(' ');
+            var strWithoutSep = str.Where(x => !x.Contains(")") && !x.Contains("("));
+            return strWithoutSep.Aggregate((x, y) => x + " " + y); 
         }
         public async Task<AttemptDTO> NewAttemptSound(NewAttemptSound attempt)
         {
@@ -140,7 +152,7 @@ namespace BLL.Service
                 var _attemptDTO = new AttemptDTO()
                 {
                     Id = dbAttempt.Id,
-                    LyricsSound = Newsound
+                    LyricsSound = Filter(Newsound)
                 };
                 return _attemptDTO;
             }

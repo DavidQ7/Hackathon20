@@ -349,8 +349,9 @@ export class GameComponent implements OnInit {
             )
             .subscribe(
               x => {
+                console.log(x);
                 this.resposeLyrics = x;
-                if (this.resposeLyrics) {
+                if (this.resposeLyrics.length > 0) {
                   this.attemptSoundId = this.resposeLyrics[0].id;
                 }
               },
@@ -403,8 +404,9 @@ export class GameComponent implements OnInit {
               )
               .subscribe(
                 x => {
+                  console.log(x);
                   this.resposeLyrics = x;
-                  if (this.resposeLyrics) {
+                  if (this.resposeLyrics.length > 0) {
                     this.attemptSoundId = this.resposeLyrics[0].id;
                   }
                 },

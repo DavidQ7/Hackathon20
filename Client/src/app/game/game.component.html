@@ -121,9 +121,6 @@
                         <span class="title">{{currentAttempt?.lyricsSound.title}}</span>
                         <span class="group">{{currentAttempt?.lyricsSound.artist}}</span>
                     </div>
-                    <div class="play">
-                        <img src="assets/multimedia.svg" />
-                    </div>
                 </div>
                 <div *ngIf="attemptSoundId" class="player">
                     <iframe scrolling="no" frameborder="0" allowTransparency="true" [src]="returnSrc()" width="350"
