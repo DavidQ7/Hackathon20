@@ -29,7 +29,6 @@ namespace BLL.Service
                 method = "findLyrics",
                 q = lyrics,
                 api_token = configuration["AuddKey"],
-                market = "us"
             };
             var json = JsonConvert.SerializeObject(data);
             var response = await Client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));

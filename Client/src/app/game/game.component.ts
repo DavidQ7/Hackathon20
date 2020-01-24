@@ -145,7 +145,6 @@ export class GameComponent implements OnInit {
       .subscribe(
         game => {
           this.game = game;
-          console.log(this.game);
         },
         error => console.log(error)
       );
@@ -206,7 +205,6 @@ export class GameComponent implements OnInit {
           } else if (event.type === HttpEventType.Response) {
 
             if (isNull(event.body)) {
-              console.log(5);
               this.gameService
                 .endGameLose(this.game.id)
                 .pipe(takeUntil(this.unsubscribe))
@@ -261,7 +259,6 @@ export class GameComponent implements OnInit {
     );
   }
   uploadVoice(file) {
-    console.log(file);
     if (file.type !== 'audio/ogg') {
       return;
     }
@@ -281,7 +278,6 @@ export class GameComponent implements OnInit {
 
               this.endGameWon();
             } else {
-              console.log(5);
               this.currentAttempt = event;
               this.loading = false;
               this.deezerService
@@ -349,7 +345,6 @@ export class GameComponent implements OnInit {
             )
             .subscribe(
               x => {
-                console.log(x);
                 this.resposeLyrics = x;
                 if (this.resposeLyrics.length > 0) {
                   this.attemptSoundId = this.resposeLyrics[0].id;
@@ -404,7 +399,6 @@ export class GameComponent implements OnInit {
               )
               .subscribe(
                 x => {
-                  console.log(x);
                   this.resposeLyrics = x;
                   if (this.resposeLyrics.length > 0) {
                     this.attemptSoundId = this.resposeLyrics[0].id;
