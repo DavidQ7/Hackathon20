@@ -36,5 +36,12 @@ namespace Server.Controllers
             var dbuser = await userService.GetByEmail(currentUserEmail);
             return dbuser;
         }
+
+        [HttpGet("Statistic")]
+        public async Task<Statistic> GetUserStat()
+        {
+            var currentUserEmail = this.GetUserEmail();
+            return await userService.GetUserStat(currentUserEmail);
+        }
     }
 }

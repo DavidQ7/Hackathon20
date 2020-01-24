@@ -33,6 +33,8 @@ declare var MediaRecorder: any;
 })
 export class GameComponent implements OnInit {
 
+  history: false;
+
   blobFile;
   recordAudio;
   sendObj = {
