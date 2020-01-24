@@ -42,7 +42,7 @@ namespace BLL.Service
             var losses = games.Where(x => x.Won == false).Count();
             var notEnded = games.Count() - wins - losses;
 
-            var last_games = games.Skip(Math.Max(0, games.Count() - 20));
+            var last_games = games.Skip(Math.Max(0, games.Count() - 20)).Reverse();
 
             var stat = new Statistic()
             {

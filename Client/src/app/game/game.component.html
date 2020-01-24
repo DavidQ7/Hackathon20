@@ -261,13 +261,16 @@
 
 <div *ngIf="history" class="history">
     <div class="score">
-        <p>Wins: 5</p>
-        <p>Losses: 5</p>
-        <p>Not finished: 2</p>
+        <p>Wins: {{statistic.wins}}</p>
+        <p>Losses:  {{statistic.losses}}</p>
+        <p>Not finished: {{statistic.notFinished}}</p>
     </div>
     <div class="divider">
     </div>
     <div class="history-container">
-        <div></div>
+        <div *ngFor="let item of statistic.games" class="stat">
+            <span>{{item.id}}</span>
+            <span>{{item.won}}</span>
+        </div>
     </div>
 </div>

@@ -23,6 +23,7 @@ import { ResponseSound } from 'src/Models/Deezer/ResponseSound';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpEventType } from '@angular/common/http';
 import Recorder from 'recorder-js';
+import { Statistic } from 'src/Models/Statistic';
 
 declare var MediaRecorder: any;
 
@@ -33,6 +34,7 @@ declare var MediaRecorder: any;
 })
 export class GameComponent implements OnInit {
 
+  statistic: Statistic;
   history: false;
 
   blobFile;
@@ -79,7 +81,9 @@ export class GameComponent implements OnInit {
           this.router.navigate(['/about']);
         }
       );
-
+    this.userService.GetStat()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(x => this.statistic = x, error => console.log(error));
   }
 
 
