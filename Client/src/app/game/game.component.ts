@@ -22,6 +22,7 @@ import { ResponseSearch } from 'src/Models/Deezer/ResponseSearch';
 import { ResponseSound } from 'src/Models/Deezer/ResponseSound';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpEventType } from '@angular/common/http';
+import Recorder from 'recorder-js';
 
 declare var MediaRecorder: any;
 
@@ -32,6 +33,14 @@ declare var MediaRecorder: any;
 })
 export class GameComponent implements OnInit {
 
+  blobFile;
+  recordAudio;
+  sendObj = {
+    audio: this.blobFile
+  };
+  audioContext =  new (AudioContext)({sampleRate: 16000});
+  recorder = new Recorder(this.audioContext, {});
+  mic = false;
 
   unsubscribe = new Subject();
   user: User;
@@ -55,6 +64,7 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initializeMic();
     this.userService
       .Get()
       .pipe(takeUntil(this.unsubscribe))
@@ -70,6 +80,64 @@ export class GameComponent implements OnInit {
 
   }
 
+
+  initializeMic() {
+    this.recordAudio = () => {
+      return new Promise(resolve => {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream, {
+              mimeType: 'audio/webm',
+              numberOfAudioChannels: 1,
+              audioBitsPerSecond : 16000,
+            });
+            const audioChunks = [];
+
+            mediaRecorder.addEventListener('dataavailable', event => {
+              audioChunks.push(event.data);
+            });
+
+            const start = () => {
+              mediaRecorder.start();
+            };
+
+            const stop = () => {
+              // tslint:disable-next-line:no-shadowed-variable
+              return new Promise(resolve => {
+                mediaRecorder.addEventListener('stop', () => {
+                  const audioBlob = new Blob(audioChunks, { type : 'audio/ogg' });
+                  this.uploadVoice(audioBlob);
+                  const reader = new FileReader();
+                  reader.readAsDataURL(audioBlob);
+                  reader.addEventListener('load', () => {
+                  }, false);
+                  resolve({ audioBlob });
+                });
+
+                mediaRecorder.stop();
+              });
+            };
+            resolve({ start, stop });
+          });
+      });
+    };
+  }
+  state() {
+    if (this.mic) {
+      this.stopPlay();
+    } else {
+      this.startPlay();
+    }
+    this.mic = !this.mic;
+  }
+  async startPlay() {
+    this.recorder = await this.recordAudio();
+    this.recorder.start();
+  }
+
+  async stopPlay() {
+    await this.recorder.stop();
+  }
   newGame() {
     this.gameService
       .newGame()
@@ -193,6 +261,7 @@ export class GameComponent implements OnInit {
     );
   }
   uploadVoice(file) {
+    console.log(file);
     if (file.type !== 'audio/ogg') {
       return;
     }
@@ -322,6 +391,7 @@ export class GameComponent implements OnInit {
           if (isNull(att)) {
             this.game.won = true;
             this.game.ended = true;
+            this.listAttempts.push(true);
           } else {
             this.currentAttempt = att;
             this.listAttempts.push(true);
