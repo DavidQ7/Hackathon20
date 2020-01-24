@@ -30,6 +30,10 @@ export class GameService {
     return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt/file'}`,
     attempt, { reportProgress: true, observe: 'events'});
   }
+  newAttemptByVoice(attempt: FormData) {
+    // tslint:disable-next-line:max-line-length
+    return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt/voice'}`, attempt);
+  }
   newAttempt(attempt: NewLyricsAttempt) {
     return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt'}`, attempt);
   }

@@ -29,9 +29,13 @@ namespace BLL.Service
         public async Task<AttemptDTO> NewAttempt(NewLyricsAttempt attempt)
         {
             var SoundsList = await auddService.GetByLyrics(attempt.Lyrics);
+
+            if (SoundsList == null)
+                return null;
+
             var Newsound = SoundsList.FirstOrDefault();
 
-            if(Newsound != null)
+            if (Newsound != null)
             {
                 var newAttempt = new Attempt()
                 {
@@ -53,7 +57,29 @@ namespace BLL.Service
         {
             var sound = await this.auddService.FindBySoundBase64(attempt);
 
-            if(sound != null)
+            if (sound != null)
+            {
+                var newAttempt = new Attempt()
+                {
+                    GameId = attempt.GameId,
+                    SoundId = 0
+                };
+                var dbAttempt = await attemptRepository.Add(newAttempt);
+
+                var _attemptDTO = new AttemptDTO()
+                {
+                    Id = dbAttempt.Id,
+                    LyricsSound = sound
+                };
+                return _attemptDTO;
+            }
+
+            return null;
+        }
+        public async Task<AttemptDTO> NewAttemptVoice(NewAttemptSound attempt)
+        {
+            var sound = await auddService.FindByVoice(attempt);
+            if (sound != null)
             {
                 var newAttempt = new Attempt()
                 {
