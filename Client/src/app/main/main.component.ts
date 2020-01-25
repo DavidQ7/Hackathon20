@@ -1,14 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/Services/user.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { User } from 'src/Models/User';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/Services/auth.service';
-import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
-import { Attempt } from 'src/Models/Attempt';
-import { WrongAttempt } from 'src/Models/WrongAttempt';
-import { Statistic } from 'src/Models/Statistic';
 
 @Component({
   selector: 'app-main',
@@ -17,25 +7,9 @@ import { Statistic } from 'src/Models/Statistic';
 })
 export class MainComponent implements OnInit {
 
-  history = false;
-  user: User;
-  unsubscribe = new Subject();
-  statistic: Statistic;
-
-  constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
-
-    change() {
-      this.history = !this.history;
-    }
+  constructor() { }
 
   ngOnInit() {
-    this.userService.Get()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(user => { this.user = user; }, error => {
-        this.router.navigate(['/about']);
-      });
-    this.userService.GetStat()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(x => this.statistic = x, error => console.log(error));
+
   }
 }
