@@ -10,6 +10,7 @@ import { Game } from 'src/Models/Game';
 import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 import { Attempt } from 'src/Models/Attempt';
 import { WrongAttempt } from 'src/Models/WrongAttempt';
+import { Statistic } from 'src/Models/Statistic';
 
 @Component({
   selector: 'app-main',
@@ -20,8 +21,10 @@ export class MainComponent implements OnInit {
 
   user: User;
   unsubscribe = new Subject();
+  statistic: Statistic;
 
-  constructor(private userService: UserService, private router: Router, private gameService: GameService) { }
+  constructor(private userService: UserService, private router: Router, private gameService: GameService
+    ,         private authService: AuthService) { }
 
   ngOnInit() {
     this.userService.Get()
@@ -29,11 +32,16 @@ export class MainComponent implements OnInit {
     .subscribe(user => { this.user = user; }, error => {
       this.router.navigate(['/about']);
     });
+    this.userService.GetStat()
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(x => this.statistic = x, error => console.log(error));
   }
   newGame() {
     this.gameService.newGame()
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => { console.log(game); }, error => console.log(error));
   }
-
+  exit() {
+    this.authService.SignOut();
+  }
 }

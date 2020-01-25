@@ -1,2 +1,10 @@
-<app-header [isLogged]="true"> </app-header>
-<button id="start" routerLink="/game">start</button>
+<div class="back">
+  <app-header [isLogged]="true"> </app-header>
+  <button id="start" routerLink="/game">start</button>
+</div>
+<div *ngIf="history" class="history">
+  <div class="score">
+    <p>Wins: {{ statistic.wins }}</p>
+    <p>Losses: {{ statistic.losses }}</p>
+  </div>
+</div>
