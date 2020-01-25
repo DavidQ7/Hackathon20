@@ -8,14 +8,14 @@ import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
 
-  {path: 'about', component: LandingComponent},
-  {path: '', component: MainComponent, canActivate: [AuthGuard] },
-  {path: 'game', component: GameComponent,  canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/about'}
+  { path: 'about', component: LandingComponent },
+  { path: '', component: MainComponent, canActivate: [AuthGuard] },
+  { path: 'game', component: GameComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/about' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
