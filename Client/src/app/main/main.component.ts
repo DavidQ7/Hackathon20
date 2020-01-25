@@ -23,7 +23,8 @@ export class MainComponent implements OnInit {
   unsubscribe = new Subject();
   statistic: Statistic;
 
-  constructor(private userService: UserService, private router: Router, private gameService: GameService) { }
+  constructor(private userService: UserService, private router: Router, private gameService: GameService
+    ,         private authService: AuthService) { }
 
   ngOnInit() {
     this.userService.Get()
@@ -40,5 +41,7 @@ export class MainComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(game => { console.log(game); }, error => console.log(error));
   }
-
+  exit() {
+    this.authService.SignOut();
+  }
 }
