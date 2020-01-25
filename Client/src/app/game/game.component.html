@@ -263,14 +263,5 @@
     <div class="score">
         <p>Wins: {{statistic.wins}}</p>
         <p>Losses:  {{statistic.losses}}</p>
-        <p>Not finished: {{statistic.notFinished}}</p>
-    </div>
-    <div class="divider">
-    </div>
-    <div class="history-container">
-        <div *ngFor="let item of statistic.games" class="stat">
-            <span>{{item.id}}</span>
-            <span>{{item.won}}</span>
-        </div>
     </div>
 </div>
