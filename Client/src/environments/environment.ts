@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  API : 'https://hackaton20.azurewebsites.net',
+  API: 'https://hackaton20.azurewebsites.net',
   production: false,
   firebase: {
     apiKey: 'AIzaSyAtswxTvtZJVGSUGEreifO14rteQU-BzQE',
