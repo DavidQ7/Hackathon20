@@ -1,7 +1,7 @@
 <header>
   <span class="logo">AudioGuess</span>
   <div *ngIf="isLogged">
-    <app-history></app-history>
+    <app-history (click)="history = !history"></app-history>
     <app-avatar></app-avatar>
     <app-logout></app-logout>
   </div>

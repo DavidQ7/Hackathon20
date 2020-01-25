@@ -5,8 +5,6 @@ import { Subject } from 'rxjs';
 import { User } from 'src/Models/User';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/Services/auth.service';
-import { GameService } from 'src/Services/game.service';
-import { Game } from 'src/Models/Game';
 import { NewLyricsAttempt } from 'src/Models/NewAttemptLyrics';
 import { Attempt } from 'src/Models/Attempt';
 import { WrongAttempt } from 'src/Models/WrongAttempt';
@@ -23,8 +21,7 @@ export class MainComponent implements OnInit {
   unsubscribe = new Subject();
   statistic: Statistic;
 
-  constructor(private userService: UserService, private router: Router, private gameService: GameService
-    , private authService: AuthService) { }
+  constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.userService.Get()
@@ -35,10 +32,5 @@ export class MainComponent implements OnInit {
     this.userService.GetStat()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(x => this.statistic = x, error => console.log(error));
-  }
-  newGame() {
-    this.gameService.newGame()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(game => { console.log(game); }, error => console.log(error));
   }
 }
