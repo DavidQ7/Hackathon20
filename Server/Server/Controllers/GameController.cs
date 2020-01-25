@@ -31,6 +31,11 @@ namespace Server.Controllers
         {
             return await gameService.EndGame(id);
         }
+        [HttpGet("lose/{id}")]
+        public async Task<GameDTO> EndGameLose(int id)
+        {
+            return await gameService.EndGameWithWon(id);
+        }
 
         [HttpGet("right/{idAtt}")]
         public async Task<GameDTO> Right(int idAtt)

@@ -37,5 +37,9 @@ namespace DAL.Repositories
         {
             return await context.Attempts.Where(x => x.Id == id).Select(x => x.Game).FirstOrDefaultAsync();
         }
+        public async Task<List<Game>> GetGamesByUserId(int id)
+        {
+            return await context.Games.Where(x => x.UserId == id).ToListAsync();
+        }
     }
 }

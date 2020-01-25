@@ -9,6 +9,7 @@ using DAL;
 using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace Server
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", reloadOnChange: true, optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfiguration Configuration { get; }
@@ -40,11 +42,10 @@ namespace Server
             {
                 builder.AllowAnyMethod()
                        .AllowAnyHeader()
-                       .AllowCredentials()
-                       .WithOrigins("http://localhost:4200");
+                       .AllowAnyOrigin();
             }));
 
-            string connectionString = Configuration["ConnectionStrings:ConnectionLocal"];
+            string connectionString = Configuration["ConnectionLocal"];
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
 
             services.AddAutoMapper(typeof(UserProfile).Assembly);
@@ -61,6 +62,7 @@ namespace Server
             services.AddControllers();
 
             services.AddSiteAuthentications(Configuration);
+
 
         }
 

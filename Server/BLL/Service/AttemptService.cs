@@ -29,9 +29,13 @@ namespace BLL.Service
         public async Task<AttemptDTO> NewAttempt(NewLyricsAttempt attempt)
         {
             var SoundsList = await auddService.GetByLyrics(attempt.Lyrics);
+
+            if (SoundsList == null)
+                return null;
+
             var Newsound = SoundsList.FirstOrDefault();
 
-            if(Newsound != null)
+            if (Newsound != null)
             {
                 var newAttempt = new Attempt()
                 {
@@ -43,10 +47,67 @@ namespace BLL.Service
                 var _attemptDTO = new AttemptDTO()
                 {
                     Id = dbAttempt.Id,
-                    LyricsSound = Newsound
+                    LyricsSound = Filter(Newsound)
                 };
                 return _attemptDTO;
             }
+            return null;
+        }
+        public LyricsSound Filter(LyricsSound last)
+        {
+            last.Artist = FindBadStr(last.Artist);
+            last.Title = FindBadStr(last.Title);
+            return last;
+        }
+        public string FindBadStr(string falseString)
+        {
+            var str = falseString.Split(' ');
+            var strWithoutSep = str.Where(x => !x.Contains(")") && !x.Contains("("));
+            return strWithoutSep.Aggregate((x, y) => x + " " + y); 
+        }
+        public async Task<AttemptDTO> NewAttemptSound(NewAttemptSound attempt)
+        {
+            var sound = await this.auddService.FindBySoundBase64(attempt);
+
+            if (sound != null)
+            {
+                var newAttempt = new Attempt()
+                {
+                    GameId = attempt.GameId,
+                    SoundId = 0
+                };
+                var dbAttempt = await attemptRepository.Add(newAttempt);
+
+                var _attemptDTO = new AttemptDTO()
+                {
+                    Id = dbAttempt.Id,
+                    LyricsSound = sound
+                };
+                return _attemptDTO;
+            }
+
+            return null;
+        }
+        public async Task<AttemptDTO> NewAttemptVoice(NewAttemptSound attempt)
+        {
+            var sound = await auddService.FindByVoice(attempt);
+            if (sound != null)
+            {
+                var newAttempt = new Attempt()
+                {
+                    GameId = attempt.GameId,
+                    SoundId = 0
+                };
+                var dbAttempt = await attemptRepository.Add(newAttempt);
+
+                var _attemptDTO = new AttemptDTO()
+                {
+                    Id = dbAttempt.Id,
+                    LyricsSound = sound
+                };
+                return _attemptDTO;
+            }
+
             return null;
         }
         public async Task<AttemptDTO> Wrong(WrongAttempt attempt)
@@ -57,7 +118,7 @@ namespace BLL.Service
 
             var GameAttempts = await attemptRepository.GetByGameId(attempt.GameId);
 
-            if (GameAttempts.Count > 4)
+            if (GameAttempts.Count > 4 || attempt.Lyrics == "")
             {
                 var game = await gameRepository.GetById(attempt.GameId);
                 game.Won = true;
@@ -91,7 +152,7 @@ namespace BLL.Service
                 var _attemptDTO = new AttemptDTO()
                 {
                     Id = dbAttempt.Id,
-                    LyricsSound = Newsound
+                    LyricsSound = Filter(Newsound)
                 };
                 return _attemptDTO;
             }

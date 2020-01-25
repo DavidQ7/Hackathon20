@@ -5,7 +5,7 @@
         </div>
 
         <div class="right-icons">
-            <svg id="Capa_1" fill="white" enable-background="new 0 0 551.13 551.13" height="30"
+            <svg (click)="history = !history"  id="Capa_1" fill="white" enable-background="new 0 0 551.13 551.13" height="30"
                 viewBox="0 0 551.13 551.13" width="30" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="m275.531 172.228-.05 120.493c0 4.575 1.816 8.948 5.046 12.177l86.198 86.181 24.354-24.354-81.153-81.136.05-113.361z" />
@@ -85,22 +85,26 @@
             <li *ngSwitchCase="null">
 
 
-                <p *ngIf="!currentAttempt" class="center">For starting fill out form</p>
+                <p *ngIf="!currentAttempt && game" class="center">For starting fill out form</p>
 
-                <div *ngIf="!currentAttempt" class="search-container">
+                <div *ngIf="!currentAttempt && game" class="search-container">
                     <input [(ngModel)]="lyrics">
                     <div class="img">
                         <img (click)="findSound()" src="assets/search.svg">
                     </div>
                     <div class="microphone">
-                        <img src="assets/radio.svg">
+                        <svg (click)="state()"  [ngClass]="{filll: mic}"  viewBox="0 0 8 8"  xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.74475 3.74896C6.74475 3.61952 6.6398 3.51459 6.51038 3.51459C6.38092 3.51459 6.276 3.61952 6.276 3.74896C6.276 5.00396 5.25497 6.02499 3.99997 6.02499C2.74497 6.02499 1.72394 5.00396 1.72394 3.74896C1.72394 3.61952 1.61898 3.51459 1.48956 3.51459C1.36011 3.51459 1.25519 3.61952 1.25519 3.74896C1.25519 5.18348 2.36142 6.36432 3.76559 6.48365V7.53124H3.24686C3.11741 7.53124 3.01248 7.63618 3.01248 7.76562C3.01248 7.89505 3.11741 7.99999 3.24686 7.99999H4.75311C4.88253 7.99999 4.98748 7.89505 4.98748 7.76562C4.98748 7.63618 4.88253 7.53124 4.75311 7.53124H4.23434V6.48363C5.63852 6.3643 6.74475 5.18346 6.74475 3.74896Z" />
+                            <path d="M4.00001 0C3.31708 0 2.76147 0.555609 2.76147 1.23853V3.74897C2.76147 4.43189 3.31708 4.98748 4.00001 4.98748C4.68296 4.98748 5.23857 4.43188 5.23857 3.74895V1.23853C5.23857 0.555609 4.68296 0 4.00001 0Z" />
+                        </svg>
                     </div>
                     <div class="file">
                         <div class="file-input">
-                            <input type="file" name="file-input" id="file-input" class="file-input__input" />
-                            <label class="file-input__label" for="file-input">
-                                <img src="assets/upload.svg"/>
-                                </label>
+                            <input type="file" name="file" id="file" class="file-input__input"
+                                (change)="uploadFile($event.target.files)" />
+                            <label class="file-input__label" for="file">
+                                <img src="assets/upload.svg" />
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -117,13 +121,10 @@
                         <span class="title">{{currentAttempt?.lyricsSound.title}}</span>
                         <span class="group">{{currentAttempt?.lyricsSound.artist}}</span>
                     </div>
-                    <div class="play">
-                        <img src="assets/multimedia.svg" />
-                    </div>
                 </div>
                 <div *ngIf="attemptSoundId" class="player">
                     <iframe scrolling="no" frameborder="0" allowTransparency="true" [src]="returnSrc()" width="350"
-                        height="140"></iframe>
+                        height="100"></iframe>
                 </div>
                 <div *ngIf="currentAttempt" class="buttons">
                     <div (click)="rightAnswer()" class="right">
@@ -138,7 +139,61 @@
 
             </li>
             <li *ngSwitchCase="true">
-                <span class="result">Game ended. You Win</span>
+                <div class="result-container">
+                    <span class="result">Game ended. You Win</span>
+                    <svg (click)="refresh()" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 477.867 477.867"
+                        style="enable-background:new 0 0 477.867 477.867;" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path d="M409.6,0c-9.426,0-17.067,7.641-17.067,17.067v62.344C304.667-5.656,164.478-3.386,79.411,84.479
+			c-40.09,41.409-62.455,96.818-62.344,154.454c0,9.426,7.641,17.067,17.067,17.067S51.2,248.359,51.2,238.933
+			c0.021-103.682,84.088-187.717,187.771-187.696c52.657,0.01,102.888,22.135,138.442,60.976l-75.605,25.207
+			c-8.954,2.979-13.799,12.652-10.82,21.606s12.652,13.799,21.606,10.82l102.4-34.133c6.99-2.328,11.697-8.88,11.674-16.247v-102.4
+			C426.667,7.641,419.026,0,409.6,0z" />
+                            </g>
+                        </g>
+                        <g>
+                            <g>
+                                <path d="M443.733,221.867c-9.426,0-17.067,7.641-17.067,17.067c-0.021,103.682-84.088,187.717-187.771,187.696
+			c-52.657-0.01-102.888-22.135-138.442-60.976l75.605-25.207c8.954-2.979,13.799-12.652,10.82-21.606
+			c-2.979-8.954-12.652-13.799-21.606-10.82l-102.4,34.133c-6.99,2.328-11.697,8.88-11.674,16.247v102.4
+			c0,9.426,7.641,17.067,17.067,17.067s17.067-7.641,17.067-17.067v-62.345c87.866,85.067,228.056,82.798,313.122-5.068
+			c40.09-41.409,62.455-96.818,62.344-154.454C460.8,229.508,453.159,221.867,443.733,221.867z" />
+                            </g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                    </svg>
+                </div>
             </li>
             <li *ngSwitchCase="false">
                 <div class="result-container">
@@ -201,5 +256,12 @@
             </li>
             <li *ngSwitchDefault></li>
         </ul>
+    </div>
+</div>
+
+<div *ngIf="history" class="history">
+    <div class="score">
+        <p>Wins: {{statistic.wins}}</p>
+        <p>Losses:  {{statistic.losses}}</p>
     </div>
 </div>

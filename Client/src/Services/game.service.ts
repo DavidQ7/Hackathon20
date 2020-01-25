@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Game } from 'src/Models/Game';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,7 @@ import { Attempt } from 'src/Models/Attempt';
 })
 export class GameService {
 
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -20,6 +21,18 @@ export class GameService {
   }
   endGame(id: number) {
     return this.httpClient.get<Game>(`${environment.API + '/api/game/'}` + `${id}`);
+  }
+  endGameLose(id: number) {
+    return this.httpClient.get<Game>(`${environment.API + '/api/game/lose/'}` + `${id}`);
+  }
+  newAttemptByFile(attempt: FormData) {
+    // tslint:disable-next-line:max-line-length
+    return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt/file'}`,
+    attempt, { reportProgress: true, observe: 'events'});
+  }
+  newAttemptByVoice(attempt: FormData) {
+    // tslint:disable-next-line:max-line-length
+    return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt/voice'}`, attempt);
   }
   newAttempt(attempt: NewLyricsAttempt) {
     return this.httpClient.post<Attempt>(`${environment.API + '/api/attempt'}`, attempt);
