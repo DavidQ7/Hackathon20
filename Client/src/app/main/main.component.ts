@@ -19,12 +19,17 @@ import { Statistic } from 'src/Models/Statistic';
 })
 export class MainComponent implements OnInit {
 
+  history = false;
   user: User;
   unsubscribe = new Subject();
   statistic: Statistic;
 
   constructor(private userService: UserService, private router: Router, private gameService: GameService
     ,         private authService: AuthService) { }
+
+    change() {
+      this.history = !this.history;
+    }
 
   ngOnInit() {
     this.userService.Get()

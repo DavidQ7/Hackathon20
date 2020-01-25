@@ -35,7 +35,7 @@ declare var MediaRecorder: any;
 export class GameComponent implements OnInit {
 
   statistic: Statistic;
-  history: false;
+  history = false;
 
   blobFile;
   recordAudio;
