@@ -1,7 +1,17 @@
 <header>
   <span class="logo">AudioGuess</span>
-  <app-header-icons [logged]="isLogged"></app-header-icons>
+  <div *ngIf="isLogged">
+    <app-history></app-history>
+    <app-avatar></app-avatar>
+    <app-logout></app-logout>
+  </div>
 </header>
+<div *ngIf="history" class="history">
+  <div class="score">
+    <p>Wins: {{ statistic.wins }}</p>
+    <p>Losses: {{ statistic.losses }}</p>
+  </div>
+</div>
 
 <!-- 
   Copyright Google LLC. All Rights Reserved.

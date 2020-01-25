@@ -35,14 +35,14 @@ declare var MediaRecorder: any;
 export class GameComponent implements OnInit {
 
   statistic: Statistic;
-  history: false;
+  history = false;
 
   blobFile;
   recordAudio;
   sendObj = {
     audio: this.blobFile
   };
-  audioContext =  new (AudioContext)({sampleRate: 16000});
+  audioContext = new (AudioContext)({ sampleRate: 16000 });
   recorder = new Recorder(this.audioContext, {});
   mic = false;
 
@@ -65,7 +65,7 @@ export class GameComponent implements OnInit {
     private deezerService: DeezerService,
     private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initializeMic();
@@ -95,7 +95,7 @@ export class GameComponent implements OnInit {
             const mediaRecorder = new MediaRecorder(stream, {
               mimeType: 'audio/webm',
               numberOfAudioChannels: 1,
-              audioBitsPerSecond : 16000,
+              audioBitsPerSecond: 16000,
             });
             const audioChunks = [];
 
@@ -111,7 +111,7 @@ export class GameComponent implements OnInit {
               // tslint:disable-next-line:no-shadowed-variable
               return new Promise(resolve => {
                 mediaRecorder.addEventListener('stop', () => {
-                  const audioBlob = new Blob(audioChunks, { type : 'audio/ogg' });
+                  const audioBlob = new Blob(audioChunks, { type: 'audio/ogg' });
                   this.uploadVoice(audioBlob);
                   const reader = new FileReader();
                   reader.readAsDataURL(audioBlob);
@@ -253,16 +253,16 @@ export class GameComponent implements OnInit {
 
   endGameWon() {
     this.gameService
-    .endGameLose(this.game.id)
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(
-      game => {
-        this.loading = false;
-        this.listAttempts.push(true);
-        this.game = game;
-      },
-      error => console.log(error)
-    );
+      .endGameLose(this.game.id)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(
+        game => {
+          this.loading = false;
+          this.listAttempts.push(true);
+          this.game = game;
+        },
+        error => console.log(error)
+      );
   }
   uploadVoice(file) {
     if (file.type !== 'audio/ogg') {
@@ -280,13 +280,13 @@ export class GameComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         event => {
-            if (!event) {
+          if (!event) {
 
-              this.endGameWon();
-            } else {
-              this.currentAttempt = event;
-              this.loading = false;
-              this.deezerService
+            this.endGameWon();
+          } else {
+            this.currentAttempt = event;
+            this.loading = false;
+            this.deezerService
               .searchByTrackName(
                 this.currentAttempt.lyricsSound.artist,
                 this.currentAttempt.lyricsSound.title
@@ -301,7 +301,7 @@ export class GameComponent implements OnInit {
                 },
                 error => console.log(error)
               );
-            }
+          }
 
         },
         error => {

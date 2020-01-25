@@ -24,24 +24,21 @@ export class MainComponent implements OnInit {
   statistic: Statistic;
 
   constructor(private userService: UserService, private router: Router, private gameService: GameService
-    ,         private authService: AuthService) { }
+    , private authService: AuthService) { }
 
   ngOnInit() {
     this.userService.Get()
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(user => { this.user = user; }, error => {
-      this.router.navigate(['/about']);
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(user => { this.user = user; }, error => {
+        this.router.navigate(['/about']);
+      });
     this.userService.GetStat()
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(x => this.statistic = x, error => console.log(error));
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(x => this.statistic = x, error => console.log(error));
   }
   newGame() {
     this.gameService.newGame()
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(game => { console.log(game); }, error => console.log(error));
-  }
-  exit() {
-    this.authService.SignOut();
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(game => { console.log(game); }, error => console.log(error));
   }
 }
